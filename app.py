@@ -18,11 +18,11 @@ y = process_data.pop("output")
 X = process_data
 
 # Huấn luyện mô hình RandomForestClassifier
-model_rf = RandomForestClassifier(max_depth=5, max_features='sqrt', criterion='gini', random_state=0, n_estimators=50)
+model_rf = RandomForestClassifier(max_depth=10, max_features='sqrt', criterion='gini', random_state=0, n_estimators=50)
 model_rf.fit(X, y)
 
 # Huấn luyện mô hình KNeighborsClassifier
-model_knn = KNeighborsClassifier(n_neighbors=5)
+model_knn = KNeighborsClassifier(n_neighbors=4)
 model_knn.fit(X, y)
 
 # Huấn luyện mô hình LogisticRegression
