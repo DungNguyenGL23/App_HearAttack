@@ -3,6 +3,9 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.naive_bayes import GaussianNB
 
 # Đọc dữ liệu và chuẩn hóa
 raw_data = pd.read_csv("heart.csv")
@@ -15,12 +18,27 @@ y = process_data.pop("output")
 X = process_data
 
 # Huấn luyện mô hình RandomForestClassifier
-model = RandomForestClassifier(max_depth=5, max_features='sqrt', criterion='gini', random_state=0, n_estimators=50)
-model.fit(X, y)
+model_rf = RandomForestClassifier(max_depth=5, max_features='sqrt', criterion='gini', random_state=0, n_estimators=50)
+model_rf.fit(X, y)
+
+# Huấn luyện mô hình KNeighborsClassifier
+model_knn = KNeighborsClassifier(n_neighbors=5)
+model_knn.fit(X, y)
+
+# Huấn luyện mô hình LogisticRegression
+model_lr = LogisticRegression(max_iter=1000)
+model_lr.fit(X, y)
+
+# Huấn luyện mô hình GaussianNB
+model_nb = GaussianNB()
+model_nb.fit(X, y)
 
 # Tạo giao diện Streamlit
 st.title("Heart Disease Prediction")
 st.write("Nhập các thông số bệnh nhân để dự đoán nguy cơ mắc bệnh tim")
+
+# Chọn thuật toán
+algorithm = st.selectbox("Chọn thuật toán", ["Random Forest", "KNN", "Logistic Regression", "Gaussian Naïve Bayes"])
 
 age = st.slider("Age", int(raw_data['age'].min()), int(raw_data['age'].max()), int(raw_data['age'].mean()))
 sex = st.selectbox("Sex", [0, 1])
@@ -42,10 +60,23 @@ input_data = pd.DataFrame([[age, sex, cp, trtbps, chol, fbs, restecg, thalachh, 
 input_data[scale_cols] = scaler.transform(input_data[scale_cols])
 
 # Dự đoán
+# Dự đoán
 if st.button("Predict"):
-    prediction = model.predict(input_data)
-    prediction_proba = model.predict_proba(input_data)[0]
+    if algorithm == "Random Forest":
+        prediction = model_rf.predict(input_data)
+        prediction_proba = model_rf.predict_proba(input_data)[0]
+    elif algorithm == "KNN":
+        prediction = model_knn.predict(input_data)
+        prediction_proba = model_knn.predict_proba(input_data)[0]
+    elif algorithm == "Logistic Regression":
+        prediction = model_lr.predict(input_data)
+        prediction_proba = model_lr.predict_proba(input_data)[0]
+    elif algorithm == "Gaussian Naïve Bayes":
+        prediction = model_nb.predict(input_data)
+        prediction_proba = model_nb.predict_proba(input_data)[0]
 
-    st.write(f"Prediction: {'Có nguy cơ mắc bệnh tim' if prediction[0] else 'Không có nguy cơ mắc bệnh tim'}")
-    st.write(f"Probability: {prediction_proba}")
-
+    if prediction is not None:  # Kiểm tra xem prediction đã được gán giá trị hay chưa
+        st.write(f"Prediction: {'Có nguy cơ mắc bệnh tim' if prediction[0] else 'Không có nguy cơ mắc bệnh tim'}")
+        st.write(f"Probability: {prediction_proba}")
+    else:
+        st.write("No prediction available.")
