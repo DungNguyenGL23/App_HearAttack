@@ -38,7 +38,7 @@ st.title("Heart Disease Prediction")
 st.write("Nhập các thông số bệnh nhân để dự đoán nguy cơ mắc bệnh tim")
 
 # Chọn thuật toán
-algorithm = st.selectbox("Chọn thuật toán", [ "Gaussian Naïve Bayes","KNN", "Logistic Regression", "Random Forest"])
+algorithm = st.selectbox("Chọn thuật toán", [ "Gaussian Naïve Bayes", "Logistic Regression"])
 
 age = st.slider("Age", int(raw_data['age'].min()), int(raw_data['age'].max()), int(raw_data['age'].mean()))
 sex = st.selectbox("Sex", [0, 1])
