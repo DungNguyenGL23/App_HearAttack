@@ -18,12 +18,12 @@ y = process_data.pop("output")
 X = process_data
 
 # Huấn luyện mô hình RandomForestClassifier
-model_rf = RandomForestClassifier(max_depth=10, max_features='sqrt', criterion='gini', random_state=0, n_estimators=50)
-model_rf.fit(X, y)
+#model_rf = RandomForestClassifier(max_depth=10, max_features='sqrt', criterion='gini', random_state=0, n_estimators=50)
+#model_rf.fit(X, y)
 
 # Huấn luyện mô hình KNeighborsClassifier
-model_knn = KNeighborsClassifier(n_neighbors=4)
-model_knn.fit(X, y)
+#model_knn = KNeighborsClassifier(n_neighbors=4)
+#model_knn.fit(X, y)
 
 # Huấn luyện mô hình LogisticRegression
 model_lr = LogisticRegression(max_iter=1000)
@@ -38,7 +38,7 @@ st.title("Heart Disease Prediction")
 st.write("Nhập các thông số bệnh nhân để dự đoán nguy cơ mắc bệnh tim")
 
 # Chọn thuật toán
-algorithm = st.selectbox("Chọn thuật toán", ["Random Forest", "KNN", "Logistic Regression", "Gaussian Naïve Bayes"])
+algorithm = st.selectbox("Chọn thuật toán", [ "Gaussian Naïve Bayes","KNN", "Logistic Regression", "Random Forest"])
 
 age = st.slider("Age", int(raw_data['age'].min()), int(raw_data['age'].max()), int(raw_data['age'].mean()))
 sex = st.selectbox("Sex", [0, 1])
@@ -62,13 +62,13 @@ input_data[scale_cols] = scaler.transform(input_data[scale_cols])
 # Dự đoán
 # Dự đoán
 if st.button("Predict"):
-    if algorithm == "Random Forest":
-        prediction = model_rf.predict(input_data)
-        prediction_proba = model_rf.predict_proba(input_data)[0]
-    elif algorithm == "KNN":
-        prediction = model_knn.predict(input_data)
-        prediction_proba = model_knn.predict_proba(input_data)[0]
-    elif algorithm == "Logistic Regression":
+    #if algorithm == "Random Forest":
+     #   prediction = model_rf.predict(input_data)
+      #  prediction_proba = model_rf.predict_proba(input_data)[0]
+    #elif algorithm == "KNN":
+     #   prediction = model_knn.predict(input_data)
+      #  prediction_proba = model_knn.predict_proba(input_data)[0]
+    if algorithm == "Logistic Regression":
         prediction = model_lr.predict(input_data)
         prediction_proba = model_lr.predict_proba(input_data)[0]
     elif algorithm == "Gaussian Naïve Bayes":
